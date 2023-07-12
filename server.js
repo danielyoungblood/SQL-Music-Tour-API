@@ -6,6 +6,8 @@ const app = express()
 require('dotenv').config()
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
+app.use("/events", require("./controllers/event"));
+app.use("/stages", require("./controllers/stage"));
 
 // ROOT
 app.get('/', (req, res) => {
@@ -18,3 +20,4 @@ app.get('/', (req, res) => {
 app.listen(process.env.PORT, () => {
     console.log(`🎸 Rockin' on port: ${process.env.PORT}`)
 })
+
