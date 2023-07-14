@@ -4,7 +4,7 @@ const { Op } = require("sequelize");
 
 //index route, shows all bands sorted by date in ascending order
 router.get("/", async (req, res) => {
-  console.log("router.get => / (band)");
+  console.log("(band) router.get=>/");
   try {
     const bands = await db.Band.findAll({
       order: [["available_start_time", "ASC"]],
@@ -20,7 +20,8 @@ router.get("/", async (req, res) => {
 
 //show route, show one band by its iD
 router.get("/:id", async (req, res) => {
-  console.log("router.get => /:id (band)");
+  console.log("(band) router.get=>/:id");
+  console.log("(band) router.get=>/:id, req.params.id=" + req.params.id);
   try {
     const bands = await db.Band.findOne({
       where: { band_id: req.params.id },
@@ -33,8 +34,8 @@ router.get("/:id", async (req, res) => {
 
 //create route, create a new band
 router.post("/", async (req, res) => {
-  console.log("router.post => / (band)");
-  console.log("router.put=>/:id, req.body" + req.body);
+  console.log("(band) router.post=>/");
+  console.log("(band) router.post=>/, req.body=" + req.body);
   try {
     const newBands = await db.Band.create(req.body);
     res.status(200).json({
@@ -48,7 +49,8 @@ router.post("/", async (req, res) => {
 
 //delete route, delete existing band
 router.delete("/:id", async (req, res) => {
-  console.log("router.get => /:id/, (band)");
+  console.log("(band) router.get=>/:id");
+  console.log("(band) router.get=>/:id, req.params.id=" + req.params.id);
   try {
     const deletedBands = await db.Band.destroy({
       where: {
@@ -65,9 +67,9 @@ router.delete("/:id", async (req, res) => {
 
 //update route, update existing band
 router.put("/:id", async (req, res) => {
-  console.log("router.put=>/:id, req.body" + req.body);
-  console.log("router.put=>/:id, req.params.id" + req.params.id);
-  console.log("router.put => /:id/, (band)");
+  console.log("(band) router.put=>/:id");
+  console.log("(band) router.put=>/:id, req.body=" + req.body);
+  console.log("(band) router.put=>/:id, req.params.id=" + req.params.id);
   try {
     const updatedBands = await db.Band.update(req.body, {
       where: {
