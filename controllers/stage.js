@@ -19,14 +19,18 @@ router.get("/", async (req, res) => {
 });
 
 //show route, show one stage by its iD
-router.get("/:id", async (req, res) => {
-  console.log("(stage) router.get=>/:id");
-  console.log("(stage) router.get=>/:id, req.params.id=" + req.params.id);
+stages.get("/:name", async (req, res) => {
   try {
-    const stages = await db.Stage.findOne({
-      where: { stage_id: req.params.id },
+    const foundStage = await Stage.findOne({
+      where: { stage_name: req.params.name },
+      include: {
+        model: Event,
+        as: "events",
+        through: { attributes: [] },
+      },
+      order: [[{ model: Event, as: "events" }, "date", "ASC"]],
     });
-    res.status(200).json(stages);
+    res.status(200).json(foundStage);
   } catch (error) {
     res.status(500).json(error);
   }

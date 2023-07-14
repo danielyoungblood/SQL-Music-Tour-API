@@ -20,14 +20,37 @@ router.get("/", async (req, res) => {
 });
 
 //show route, show one event by its iD
-router.get("/:id", async (req, res) => {
-  console.log("(event) router.get=>/:id");
-  console.log("(event) router.get=>/:id, req.params.id=" + req.params.id);
+events.get("/:name", async (req, res) => {
   try {
-    const events = await db.Event.findOne({
-      where: { event_id: req.params.id },
+    const foundEvent = await Event.findOne({
+      where: { name: req.params.name },
+      include: [
+        {
+          model: MeetGreet,
+          as: "meet_greets",
+          attributes: { exclude: ["event_id", "band_id"] },
+          include: {
+            model: Band,
+            as: "band",
+          },
+        },
+        {
+          model: SetTime,
+          as: "set_times",
+          attributes: { exclude: ["event_id", "stage_id", "band_id"] },
+          include: [
+            { model: Band, as: "band" },
+            { model: Stage, as: "stage" },
+          ],
+        },
+        {
+          model: Stage,
+          as: "stages",
+          through: { attributes: [] },
+        },
+      ],
     });
-    res.status(200).json(events);
+    res.status(200).json(foundEvent);
   } catch (error) {
     res.status(500).json(error);
   }
